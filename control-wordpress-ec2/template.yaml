@@ -1,0 +1,65 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: Lambda Functions to Start and Stop an EC2 Instance
+
+Resources:
+  EC2Starter:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: start-ec2.lambda_handler
+      Runtime: python3.8
+      FunctionName: wordpreww_start_ec2
+      CodeUri: ./src
+      Description: A Lambda function that starts an EC2 instance.
+      MemorySize: 128
+      Timeout: 10
+      Role: !GetAtt LambdaExecutionRole.Arn
+      Environment:
+        Variables:
+          INSTANCE_ID: 'i-0e84225d6aeb0f165'
+
+  EC2Stopper:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: stop-ec2.lambda_handler
+      Runtime: python3.8
+      FunctionName: wordpreww_end_ec2
+      CodeUri: ./src
+      Description: A Lambda function that stops an EC2 instance.
+      MemorySize: 128
+      Timeout: 10
+      Role: !GetAtt LambdaExecutionRole.Arn
+      Environment:
+        Variables:
+          INSTANCE_ID: 'i-0e84225d6aeb0f165'
+
+  LambdaExecutionRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service:
+                - lambda.amazonaws.com
+            Action: 'sts:AssumeRole'
+      Policies:
+        - PolicyName: LambdaEC2ControlPolicy
+          PolicyDocument:
+            Version: '2012-10-17'
+            Statement:
+              - Effect: Allow
+                Action:
+                  - ec2:StartInstances
+                  - ec2:StopInstances
+                  - ec2:DescribeInstances
+                Resource: '*'
+
+Outputs:
+  StarterLambdaFunction:
+    Description: "ARN of the Lambda Function to start an EC2 instance"
+    Value: !Ref EC2Starter
+  StopperLambdaFunction:
+    Description: "ARN of the Lambda Function to stop an EC2 instance"
+    Value: !Ref EC2Stopper
