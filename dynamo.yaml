@@ -1,0 +1,21 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: 'CloudFormation template to create a DynamoDB table for managing EC2 instance states.'
+
+Resources:
+  EC2InstanceTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: EC2InstanceState
+      AttributeDefinitions:
+        - AttributeName: InstanceId
+          AttributeType: S
+        - AttributeName: Status
+          AttributeType: S
+      KeySchema:
+        - AttributeName: InstanceId
+          KeyType: HASH
+        - AttributeName: Status
+          KeyType: RANGE
+      ProvisionedThroughput:
+        ReadCapacityUnits: 1
+        WriteCapacityUnits: 1
