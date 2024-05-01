@@ -2,21 +2,33 @@ AWSTemplateFormatVersion: '2010-09-09'
 Transform: AWS::Serverless-2016-10-31
 Description: Lambda Functions to Start and Stop an EC2 Instance
 
+Globals:
+  Function:
+    Runtime: python3.9
+    CodeUri: ./src
+    MemorySize: 128
+    Timeout: 10
+    Environment:
+      Variables:
+        INSTANCE_ID: 'i-0e84225d6aeb0f165'
+        SLACK_WEBHOOK_URL: 'https://hooks.slack.com/services/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'
+        
 Resources:
+  EC2Cron:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: cron.lambda_handler
+      FunctionName: wordpress_cron
+      Description: A Lambda function that starts an EC2 instance.
+      Role: !GetAtt LambdaExecutionRole.Arn
+
   EC2Main:
     Type: AWS::Serverless::Function
     Properties:
       Handler: main.lambda_handler
-      Runtime: python3.9
       FunctionName: wordpress_main
-      CodeUri: ./src
       Description: A Lambda function that starts an EC2 instance.
-      MemorySize: 128
-      Timeout: 10
       Role: !GetAtt LambdaExecutionRole.Arn
-      Environment:
-        Variables:
-          INSTANCE_ID: 'i-0e84225d6aeb0f165'
       Events:
         GetEvents:
           Type: Api
@@ -31,14 +43,8 @@ Resources:
       Handler: start-ec2.lambda_handler
       Runtime: python3.9
       FunctionName: wordpress_start_ec2
-      CodeUri: ./src
       Description: A Lambda function that starts an EC2 instance.
-      MemorySize: 128
-      Timeout: 10
       Role: !GetAtt LambdaExecutionRole.Arn
-      Environment:
-        Variables:
-          INSTANCE_ID: 'i-0e84225d6aeb0f165'
       Events:
         GetEvents:
           Type: Api
@@ -53,14 +59,8 @@ Resources:
       Handler: stop-ec2.lambda_handler
       Runtime: python3.9
       FunctionName: wordpress_end_ec2
-      CodeUri: ./src
       Description: A Lambda function that stops an EC2 instance.
-      MemorySize: 128
-      Timeout: 10
       Role: !GetAtt LambdaExecutionRole.Arn
-      Environment:
-        Variables:
-          INSTANCE_ID: 'i-0e84225d6aeb0f165'
       Events:
         GetEvents:
           Type: Api

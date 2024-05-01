@@ -7,6 +7,6 @@ architecture = "x86_64"
 handler = "start-ec2.lambda_handler"
 manifest_hash = "197b4deb87ffa3decd9f045926a86cd0"
 packagetype = "Zip"
-functions = ["EC2Main", "EC2Starter", "EC2Stopper"]
+functions = ["EC2Cron", "EC2Main", "EC2Starter", "EC2Stopper"]
 
 [layer_build_definitions]

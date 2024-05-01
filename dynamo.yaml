@@ -9,13 +9,9 @@ Resources:
       AttributeDefinitions:
         - AttributeName: InstanceId
           AttributeType: S
-        - AttributeName: Status
-          AttributeType: S
       KeySchema:
         - AttributeName: InstanceId
           KeyType: HASH
-        - AttributeName: Status
-          KeyType: RANGE
       ProvisionedThroughput:
         ReadCapacityUnits: 1
         WriteCapacityUnits: 1

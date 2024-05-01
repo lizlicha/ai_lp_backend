@@ -29,7 +29,7 @@ def lambda_handler(event, context):
     if functionName:
         response = boto3.client('lambda').invoke(
             FunctionName = functionName,
-            InvocationType='RequestResponse'
+            InvocationType='Event'
             )
         print(response)
 
