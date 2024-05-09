@@ -22,7 +22,7 @@ def stop_ec2():
 
     # インスタンスを停止
     instance = ec2.Instance(instance_id)
-    #response = instance.stop()
+    response = instance.stop()
     write_to_dynamodb(instance_id,0)
 
 def send_message_to_sqs(channel, message):

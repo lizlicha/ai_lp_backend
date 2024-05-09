@@ -25,7 +25,7 @@ def start_ec2():
 
     # インスタンスを起動
     instance = ec2.Instance(instance_id)
-    #response = instance.start()
+    response = instance.start()
     write_to_dynamodb(instance_id,'1')
 
 def send_message_to_sqs(channel, message):
