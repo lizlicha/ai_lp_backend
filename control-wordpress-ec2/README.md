@@ -1,5 +1,17 @@
 # control-wordpress-ec2
 
+## Current deployed controller
+
+The existing `wordpress_main` Lambda is invoked by API Gateway `EC2_Control_API`
+at `POST /main`. Its deployed entry point is `main.lambda_handler`; the recovered
+source is `src/main.py`. It accepts Slack URL verification and text message events.
+Messages without `event.text` are acknowledged without invoking the EC2 start or
+stop functions. Test it with `python3 -m pytest tests/unit/test_main.py`.
+
+The SAM template below is older than the deployed controller and does not define
+`wordpress_main`. Do not use that template to redeploy the controller without first
+reconciling the live stack and source. The EC2 instance is managed separately.
+
 This project contains source code and supporting files for a serverless application that you can deploy with the SAM CLI. It includes the following files and folders.
 
 - hello_world - Code for the application's Lambda function.
